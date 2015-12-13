@@ -1,5 +1,5 @@
 #!/bin/sh
 
-git add .
+git a #add .
 git commit -m "$1"
-git p
+git p #push -u origin master
