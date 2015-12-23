@@ -4,12 +4,10 @@ import os
 import subprocess
 import re
 
-
-reposCount = 0
 reposToPush = []
-count = 0
 
 def checkFilesForPush(dirName, fileNamePattern):
+    count = 0
     print "Searching from ", dirName
     os.chdir(dirName)
     folderList=os.listdir(r"./")
@@ -24,7 +22,8 @@ def checkFilesForPush(dirName, fileNamePattern):
             # if this itself is a git repo, push
             status = subprocess.call('git s', shell=True)
             if status != 128:
-                push(folderName)
+                findPushable(os.path.abspath("."))
+                count += 1
             # else cycle through and find the repos to be pushed
             repos = os.listdir(r".")
             for repo in repos:
@@ -35,21 +34,23 @@ def checkFilesForPush(dirName, fileNamePattern):
                     if status != 128:
                         # git repo
                         # need to push
-                        push(repo)
+                        findPushable(os.path.abspath("."))
                     else:
                         # not a git repo
                         print "Not a Git repo"
                     # go back to parent and continue
                     os.chdir(r"../")
-                    # count += 1
+                    count += 1
             # go back to parent and continue
             os.chdir(r"../")
     print count, "folders checked"
-    print reposCount, "repos found"
+    print len(reposToPush), "repos found"
     print reposToPush
-    #
+    # now push them
+    for repo in reposToPush:
+        push(repo)
 
-def push(repo):
+def findPushable(repo):
     print "Git repo"
     pushStatus = subprocess.call('git s | egrep --color=auto \'Your branch is up-to-date\'', shell=True)
     # print pushStatus
@@ -57,6 +58,15 @@ def push(repo):
         # means not up to date
         print "This repo is not up to date", repo
         reposToPush.append(repo)
-        #reposCount += 1
+
+def push(repo):
+    os.chdir(repo)
+    # one final safety net, only push to my repos on github
+    isMyRepo = subprocess.call('git remote -v | egrep --color=auto \'(.*)github(.*)TDA\'', shell=True)
+    # print isMyRepo
+    if isMyRepo == 0:
+        pushStatus = subprocess.call('git p', shell=True)
+        if pushStatus != 128:
+            print pushStatus, repo, "pushed successfully"
 
 checkFilesForPush(r"../", r"(Projects)|(Scripts)$")
