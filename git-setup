@@ -1,4 +1,5 @@
 #!/bin/sh
 
 git init
-git rad $1
+echo "Setting https://github.com/TDA/"$1".git as origin"
+git rad "https://github.com/TDA/"$1".git" #remote add origin master
