@@ -83,4 +83,4 @@ def pushReadmeChange():
         subprocess.call('gg.sh "README Updated" ', shell=True)
 
 
-checkFilesForPush(r"../", r"(Projects)|(Scripts)$")
+checkFilesForPush(os.path.expanduser("~"), r"(Projects)|(Scripts)$")
