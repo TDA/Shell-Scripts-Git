@@ -69,4 +69,13 @@ def push(repo):
         if pushStatus != 128:
             print pushStatus, repo, "pushed successfully"
 
+def isReadmeChange(repo):
+    os.chdir(repo)
+    # this is to automatically add "README Updated" as a commit message
+    pushMessageStatus = subprocess.call('git s | egrep --color=auto \'README\'', shell=True)
+    if pushMessageStatus == 0:
+        # means README was changed
+        subprocess.call('gg.sh "README Updated" ', shell=True)
+
+
 checkFilesForPush(r"../", r"(Projects)|(Scripts)$")
