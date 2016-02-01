@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 __author__ = 'saipc'
 
 import os
@@ -82,4 +83,4 @@ def pushReadmeChange():
         subprocess.call('gg.sh "README Updated" ', shell=True)
 
 
-checkFilesForPush(r"../", r"(Shell).*(Projects)|(Scripts)$")
+checkFilesForPush(r"../", r"(Projects)|(Scripts)$")
