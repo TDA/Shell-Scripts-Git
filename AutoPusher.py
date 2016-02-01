@@ -17,24 +17,28 @@ def checkFilesForPush(dirName, fileNamePattern):
     for folderName in folderList:
         # cycle through the project folders
         if os.path.isdir(folderName) and re.search(fileNamePattern, folderName):
-            print "Searching ", folderName
+            # print "Searching ", folderName
             os.chdir(folderName)
             # if this itself is a git repo, push
             status = subprocess.call('git s', shell=True)
             if status != 128:
                 findPushable(os.path.abspath("."))
+                pushReadmeChange()
                 count += 1
             # else cycle through and find the repos to be pushed
             repos = os.listdir(r".")
             for repo in repos:
                 if os.path.isdir(repo) and not repo.startswith('.'):
                     os.chdir(repo)
+                    print repo
                     status = subprocess.call('git s', shell=True)
                     # print status
                     if status != 128:
                         # git repo
                         # need to push
                         findPushable(os.path.abspath("."))
+                        # check for readme
+                        pushReadmeChange()
                     else:
                         # not a git repo
                         print "Not a Git repo"
@@ -69,13 +73,13 @@ def push(repo):
         if pushStatus != 128:
             print pushStatus, repo, "pushed successfully"
 
-def isReadmeChange(repo):
-    os.chdir(repo)
+def pushReadmeChange():
     # this is to automatically add "README Updated" as a commit message
     pushMessageStatus = subprocess.call('git s | egrep --color=auto \'README\'', shell=True)
-    if pushMessageStatus == 0:
+    print "This is the readme function", pushMessageStatus
+    if pushMessageStatus != 1:
         # means README was changed
         subprocess.call('gg.sh "README Updated" ', shell=True)
 
 
-checkFilesForPush(r"../", r"(Projects)|(Scripts)$")
+checkFilesForPush(r"../", r"(Shell).*(Projects)|(Scripts)$")
