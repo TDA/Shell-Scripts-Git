@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# NOTE: THIS COMMAND IS ONLY TO BE USED WHEN ON Master
+# AND ONLY WHEN YOU WANT TO REBASE THE LAST USED Branch
+# AGAINST Master
+
+# this checks out the last used branch
+git ch -
+# then call grm, which rebases against master
+grm
