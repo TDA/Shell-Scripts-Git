@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# checkouts master and git pull origin master
+git ch master
+git pom

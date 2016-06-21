@@ -4,7 +4,15 @@
 # AND ONLY WHEN YOU WANT TO REBASE THE LAST USED Branch
 # AGAINST Master
 
-# this checks out the last used branch
-git ch -
+# this checks out the last used branch by default
+# if number was provided as a param, then checkout that instead
+if [ $1 != '' ] ; then
+	echo 'Checking out something else'
+    git ch @{-$1}
+else
+	echo 'Checking out previous branch'
+    git ch -
+fi
+
 # then call grm, which rebases against master
 grm
