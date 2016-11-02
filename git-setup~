@@ -3,6 +3,4 @@
 git init
 echo "Setting https://github.com/TDA/"$1".git as origin"
 git rad "https://github.com/TDA/"$1".git" #remote add origin master
-if [[ ! -z $2 ]]; then
-	hub create -d $2
-fi
+hub create -d $2
