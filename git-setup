@@ -1,8 +1,16 @@
 #!/bin/sh
 
 git init
+if [[ -z $1 ]]; then
+	echo "No repo name specified, exiting"
+	exit 1
+fi
+
 echo "Setting https://github.com/TDA/"$1".git as origin"
 git rad "https://github.com/TDA/"$1".git" #remote add origin master
 if [[ ! -z $2 ]]; then
+	echo "Creating the remote repo"
 	hub create -d $2
+else
+	echo "No second param, not creating the remote repo"
 fi
